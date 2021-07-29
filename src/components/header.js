@@ -4,26 +4,26 @@ class Header extends Component {
   render(){
     return (
         <nav className="navbar navbar-expand-sm navbar-dark bg-primary">
-            <a className="navbar-brand" >Navbar</a>
-            <button className="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+            <a href="/some/valid/uri" className="navbar-brand" >State</a>
+            {/* <button className="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
                 aria-expanded="false" aria-label="Toggle navigation"></button>
             <div className="collapse navbar-collapse" id="collapsibleNavId">
                 <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li className="nav-item active">
-                        <a className="nav-link" >Home <span className="sr-only">(current)</span></a>
+                        <a href="/some/valid/uri" className="nav-link" >Home <span className="sr-only">(current)</span></a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link">Link</a>
+                        <a href="/some/valid/uri" className="nav-link">Link</a>
                     </li>
                     <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle"  id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                        <a href="/some/valid/uri" className="nav-link dropdown-toggle"  id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
                         <div className="dropdown-menu" aria-labelledby="dropdownId">
-                            <a className="dropdown-item" >Action 1</a>
-                            <a className="dropdown-item" >Action 2</a>
+                            <a href="/some/valid/uri" className="dropdown-item" >Action 1</a>
+                            <a href="/some/valid/uri" className="dropdown-item" >Action 2</a>
                         </div>
                     </li>
                 </ul>
-            </div>
+            </div> */}
         </nav>
       
     );
