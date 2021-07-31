@@ -1,59 +1,114 @@
 import React, { Component } from "react";
 import "./App.css";
-import ColorPicker from "./components/ColorPicker";
-import Reset from "./components/Reset";
-import Result from "./components/Result";
-import SizeSetting from "./components/SizeSetting";
+import Control from "./components/Control";
+import TaskForm from "./components/TaskForm";
+import TaskList from "./components/TaskList";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      color: "red",
-      fontSize: 16,
+      tasks: [], //id : unique, name, status
+      isDisplayForm: false,
     };
   }
 
-  onSetColor = (params) => {
-    console.log(params);
-    this.setState({
-      color: params,
-    });
-  };
-
-  onChangeSize = (value) => {
-    if (this.state.fontSize + value >= 8 && this.state.fontSize + value <= 36) {
+  componentWillMount() {
+    if (localStorage && localStorage.getItem("tasks")) {
+      let tasks = JSON.parse(localStorage.getItem("tasks"));
       this.setState({
-        fontSize: this.state.fontSize + value,
+        tasks: tasks,
       });
-    }
-  };
-
-  onSettingDefault=(value)=> {
-    if (value) {
-      this.setState({ color: "red", fontSize: 16 });
     }
   }
 
+  onToggleForm = () => {
+    this.setState({
+      isDisplayForm: !this.state.isDisplayForm,
+    });
+  };
+  onCloseForm = () => {
+    this.setState({
+      isDisplayForm: false,
+    });
+  };
+
+  onGenerateData = () => {
+    let tasks = [
+      {
+        id: 1,
+        name: "Học lập trình",
+        status: true,
+      },
+      {
+        id: 2,
+        name: "Đi bơi",
+        status: false,
+      },
+      {
+        id: 3,
+        name: "Ngủ",
+        status: true,
+      },
+    ];
+    // lưu các task vào state
+    this.setState({
+      tasks: tasks,
+    });
+    // nên lưu trữ thành chuỗi
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  };
+
   render() {
+    let { tasks, isDisplayForm } = this.state; // = cách viết let tasks = this.state.tasks
+    let elmTaskForm = isDisplayForm ? (
+      <TaskForm onCloseForm={this.onCloseForm} />
+    ) : (
+      ""
+    );
     return (
-      <div className="container mt-5">
+      <div className="container">
+        <div className="text-center">
+          <h1>Quản Lý Công Việc</h1>
+          <hr />
+        </div>
         <div className="row">
-          <div className="col-6">
-            <ColorPicker
-              color={this.state.color}
-              onReceiveColor={this.onSetColor}
-            />
+          <div
+            className={
+              isDisplayForm ? "col-xs-4 col-sm-4 col-md-4 col-lg-4" : ""
+            }
+          >
+            {/* Form */}
+            {elmTaskForm}
           </div>
-          <div className="col-6">
-            <SizeSetting
-              fontSize={this.state.fontSize}
-              onChangeSize={this.onChangeSize}
-            />
-            <Reset onSettingDefault={this.onSettingDefault} />
+          <div
+            className={
+              isDisplayForm
+                ? "col-xs-8 col-sm-8 col-md-8 col-lg-8"
+                : "col-xs-12 col-sm-12 col-md-12 col-lg-12"
+            }
+          >
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={this.onToggleForm}
+            >
+              <span className="fa fa-plus mr-5"></span>Thêm Công Việc
+            </button>
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={this.onGenerateData}
+            >
+              Generate Data
+            </button>
+            {/* Search-Sort */}
+            <div className="row mt-15">
+              <Control />
+            </div>
+            <TaskList tasks={tasks} />
           </div>
         </div>
-        <Result color={this.state.color} fontSize={this.state.fontSize} />
       </div>
     );
   }
