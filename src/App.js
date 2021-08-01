@@ -85,6 +85,17 @@ class App extends Component {
     });
     return result;
   };
+
+  onDelete = (id) => {
+    let { tasks } = this.state;
+    let index = this.findIndex(id);
+    if (index !== -1) {
+      tasks.splice(index,1)
+      this.setState({ tasks: tasks });
+      localStorage.setItem('tasks',JSON.stringify(tasks))
+    }
+    this.onCloseForm();
+  }
   render() {
     let { tasks, isDisplayForm } = this.state; // = cách viết let tasks = this.state.tasks
     let elmTaskForm = isDisplayForm ? (
@@ -125,7 +136,7 @@ class App extends Component {
             <div className="row mt-15">
               <Control />
             </div>
-            <TaskList tasks={tasks} onUpdateStatus={this.onUpdateStatus} />
+            <TaskList tasks={tasks} onUpdateStatus={this.onUpdateStatus} onDelete={this.onDelete}/>
           </div>
         </div>
       </div>
