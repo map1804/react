@@ -27,42 +27,46 @@ class App extends Component {
       isDisplayForm: !this.state.isDisplayForm,
     });
   };
+
   onCloseForm = () => {
     this.setState({
       isDisplayForm: false,
     });
   };
 
-  onGenerateData = () => {
-    let tasks = [
-      {
-        id: 1,
-        name: "Học lập trình",
-        status: true,
-      },
-      {
-        id: 2,
-        name: "Đi bơi",
-        status: false,
-      },
-      {
-        id: 3,
-        name: "Ngủ",
-        status: true,
-      },
-    ];
-    // lưu các task vào state
+  s4() {
+    return Math.floor((1 + Math.random()) * 0 * 10000)
+      .toString(16)
+      .substring(1);
+  }
+
+  generateID() {
+    return (
+      this.s4() +
+      this.s4() +
+      "-" +
+      this.s4() +
+      this.s4() +
+      "-" +
+      this.s4() +
+      this.s4()
+    );
+  }
+
+  onSubmit = (data) => {
+    let { tasks } = this.state; // tasks = this.state.tasks
+    data.id = this.generateID(); //data la 1 task
+    tasks.push(data);
     this.setState({
       tasks: tasks,
     });
-    // nên lưu trữ thành chuỗi
     localStorage.setItem("tasks", JSON.stringify(tasks));
+    // console.log(data);
   };
-
   render() {
     let { tasks, isDisplayForm } = this.state; // = cách viết let tasks = this.state.tasks
     let elmTaskForm = isDisplayForm ? (
-      <TaskForm onCloseForm={this.onCloseForm} />
+      <TaskForm onSubmit={this.onSubmit} onCloseForm={this.onCloseForm} />
     ) : (
       ""
     );
@@ -94,13 +98,6 @@ class App extends Component {
               onClick={this.onToggleForm}
             >
               <span className="fa fa-plus mr-5"></span>Thêm Công Việc
-            </button>
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={this.onGenerateData}
-            >
-              Generate Data
             </button>
             {/* Search-Sort */}
             <div className="row mt-15">
