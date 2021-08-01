@@ -10,6 +10,7 @@ class App extends Component {
     this.state = {
       tasks: [], //id : unique, name, status
       isDisplayForm: false,
+      taskEditing: null,
     };
   }
 
@@ -23,14 +24,29 @@ class App extends Component {
   }
 
   onToggleForm = () => {
-    this.setState({
-      isDisplayForm: !this.state.isDisplayForm,
-    });
+    // thêm task: kiểm tra đang edit mà muốn thêm task
+    if (this.state.isDisplayForm && this.state.taskEditing !== null) {
+      this.setState({
+        isDisplayForm: true,
+        taskEditing: null,
+      });
+    } else {
+      this.setState({
+        isDisplayForm: !this.state.isDisplayForm,
+        taskEditing: null,
+      });
+    }
   };
 
   onCloseForm = () => {
     this.setState({
       isDisplayForm: false,
+    });
+  };
+
+  onShowForm = () => {
+    this.setState({
+      isDisplayForm: true,
     });
   };
 
@@ -56,13 +72,19 @@ class App extends Component {
 
   onSubmit = (data) => {
     let { tasks } = this.state; // tasks = this.state.tasks
-    data.id = this.generateID(); //data la 1 task
-    tasks.push(data);
+    if (data.id === "") {
+      data.id = this.generateID(); //data la 1 task
+      tasks.push(data);
+    } else {
+      // edit
+      let index = this.findIndex(data.id);
+      tasks[index] = data;
+    }
     this.setState({
       tasks: tasks,
+      taskEditing: null,
     });
     localStorage.setItem("tasks", JSON.stringify(tasks));
-    // console.log(data);
   };
 
   onUpdateStatus = (id) => {
@@ -71,7 +93,7 @@ class App extends Component {
     if (index !== -1) {
       tasks[index].status = !tasks[index].status;
       this.setState({ tasks: tasks });
-      localStorage.setItem('tasks',JSON.stringify(tasks))
+      localStorage.setItem("tasks", JSON.stringify(tasks));
     }
   };
 
@@ -90,16 +112,31 @@ class App extends Component {
     let { tasks } = this.state;
     let index = this.findIndex(id);
     if (index !== -1) {
-      tasks.splice(index,1)
+      tasks.splice(index, 1);
       this.setState({ tasks: tasks });
-      localStorage.setItem('tasks',JSON.stringify(tasks))
+      localStorage.setItem("tasks", JSON.stringify(tasks));
     }
     this.onCloseForm();
-  }
+  };
+
+  onUpdate = (id) => {
+    let { tasks } = this.state;
+    let index = this.findIndex(id);
+    let taskEditing = tasks[index];
+    console.log(taskEditing);
+    this.setState({
+      taskEditing: taskEditing,
+    });
+    this.onShowForm();
+  };
   render() {
-    let { tasks, isDisplayForm } = this.state; // = cách viết let tasks = this.state.tasks
+    let { tasks, isDisplayForm, taskEditing } = this.state; // = cách viết let tasks = this.state.tasks
     let elmTaskForm = isDisplayForm ? (
-      <TaskForm onSubmit={this.onSubmit} onCloseForm={this.onCloseForm} />
+      <TaskForm
+        onSubmit={this.onSubmit}
+        onCloseForm={this.onCloseForm}
+        task={taskEditing}
+      />
     ) : (
       ""
     );
@@ -136,7 +173,12 @@ class App extends Component {
             <div className="row mt-15">
               <Control />
             </div>
-            <TaskList tasks={tasks} onUpdateStatus={this.onUpdateStatus} onDelete={this.onDelete}/>
+            <TaskList
+              tasks={tasks}
+              onUpdateStatus={this.onUpdateStatus}
+              onDelete={this.onDelete}
+              onUpdate={this.onUpdate}
+            />
           </div>
         </div>
       </div>
