@@ -35,9 +35,9 @@ class App extends Component {
   };
 
   s4() {
-    return Math.floor((1 + Math.random()) * 0 * 10000)
+    return Math.floor(Math.random() * 16)
       .toString(16)
-      .substring(1);
+      .toUpperCase();
   }
 
   generateID() {
@@ -48,6 +48,7 @@ class App extends Component {
       this.s4() +
       this.s4() +
       "-" +
+      this.s4() +
       this.s4() +
       this.s4()
     );
@@ -62,6 +63,27 @@ class App extends Component {
     });
     localStorage.setItem("tasks", JSON.stringify(tasks));
     // console.log(data);
+  };
+
+  onUpdateStatus = (id) => {
+    let { tasks } = this.state;
+    let index = this.findIndex(id);
+    if (index !== -1) {
+      tasks[index].status = !tasks[index].status;
+      this.setState({ tasks: tasks });
+      localStorage.setItem('tasks',JSON.stringify(tasks))
+    }
+  };
+
+  findIndex = (id) => {
+    let { tasks } = this.state;
+    let result = -1;
+    tasks.forEach((task, index) => {
+      if (task.id === id) {
+        result = index;
+      }
+    });
+    return result;
   };
   render() {
     let { tasks, isDisplayForm } = this.state; // = cách viết let tasks = this.state.tasks
@@ -103,7 +125,7 @@ class App extends Component {
             <div className="row mt-15">
               <Control />
             </div>
-            <TaskList tasks={tasks} />
+            <TaskList tasks={tasks} onUpdateStatus={this.onUpdateStatus} />
           </div>
         </div>
       </div>

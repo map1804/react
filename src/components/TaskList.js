@@ -1,13 +1,19 @@
 import React, { Component } from "react";
-import TaskItem from './TaskItem';
+import TaskItem from "./TaskItem";
 
 class TaskList extends Component {
   render() {
-    let {tasks} = this.props; // = let tasks = this.props.tasks
-    let elmTasks = tasks.map((task,index)=>{
-      return <TaskItem key = {index} task={task} index={index}/>
-    })
-    console.log(tasks);
+    let { tasks } = this.props; // = let tasks = this.props.tasks
+    let elmTasks = tasks.map((task, index) => {
+      return (
+        <TaskItem
+          key={index}
+          task={task}
+          index={index}
+          onUpdateStatus={this.props.onUpdateStatus}
+        />
+      );
+    });
     return (
       <div className="row mt-15">
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
