@@ -10,3 +10,5 @@ App thực hiện xóa đi phần tử trong ds Task và cập nhật lại ph�
 ## Sửa Task
 Bắt sự kiện sửa tại TaskItem rồi mở form lên => truyền giá trị task đã click vào lên form 
 App thực hiện xóa đi phần tử trong ds Task và cập nhật lại phần tử trong localstorage
+
+## Lọc dữ liệu
