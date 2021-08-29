@@ -12,3 +12,4 @@ Bắt sự kiện sửa tại TaskItem rồi mở form lên => truyền giá tr�
 App thực hiện xóa đi phần tử trong ds Task và cập nhật lại phần tử trong localstorage
 
 ## Lọc dữ liệu
+Bị lỗi không lấy được giá trị từ ô input
